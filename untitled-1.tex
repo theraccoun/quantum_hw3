@@ -1,0 +1,207 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath}
+\newcommand{\piRsquare}{\pi r^2}
+
+\title{Quant. Comp. HW - 2}
+\author{Steven MacCoun}
+\date{Oct. 18, 2005}
+
+\begin{document}
+\maketitle						% automatic title!
+
+
+
+\section{Is Valid Superposition?}
+
+Determine if the state $|\phi>$ is a valid superposition $$|\phi> = \frac{1}{1+i} |0> + \frac{1}{1-i}|1>$$
+The state is valid provided that  it is length normalized to one.
+$$|\frac{1}{1+i}|^2 + |\frac{1}{1-i}|^2$$
+First multiply by the complex conjugate/complex conjugate to make it clear what the real and imaginary parts are
+for each coefficient:
+$$= |\frac{1}{1+i} \frac{1-i}{1-i}|^2 + |\frac{1}{1-i} \frac{1+i}{1+i}|^2 $$
+$$=|\frac{1}{2} - \frac{1}{2}i|^2 + |\frac{1}{2} + \frac{1}{2}i|^2$$
+$$=( \frac{1}{2})^2 + ( \frac{-1}{2})^2 + ( \frac{1}{2})^2 + ( \frac{1}{2})^2$$
+$$= (1/4) + (1/4) + (1/4) + (1/4) = 1$$
+Therefore the state is \textbf{valid}.
+\\Note that another, maybe simpler way to do this, would be to exploit the property that $|a/b| = |a|/|b|$
+So
+$$|\frac{1}{1+i}|^2 + |\frac{1}{1-i}|^2$$
+$$= \frac{|1|^2}{|1+i|^2} + \frac{|1|^2}{|1-i|^2}$$
+$$ = (1/2) + (1/2) = 1 $$
+
+\section{Find valid superposition}
+
+Given $|\phi> = (1/2)|00> + \frac{x}{2 \sqrt{2}}|01> + \frac{1}{2 \sqrt{2}}|10> +  \frac{1}{2}|11>$, what values of x would make this a valid superposition?
+
+Again the normalization condition is applied:
+$$|\frac{1}{2}|^{2} + |\frac{x}{2 \sqrt{2}}|^2 + |\frac{1}{2 \sqrt{2}}|^2 +  |\frac{1}{2}|^2 = 1$$
+$$(1/4) + \frac{|x|^2}{8} + (1/8) + (1/4) = 1$$
+$$\frac{(5 + |x|^2)}{8} = 1$$
+$$|x|^2 = 3$$
+Since x can be imaginary, all we know is that the real part must be equal to $\sqrt{3}$
+Therefore:
+\[
+\boxed{x = \sqrt{3} + bi}
+\]
+\section{}
+
+Let $|\psi> = \frac{1}{\sqrt{3}}(|00> + |01> + |10>)$
+Find:
+$$|\phi> = (H \otimes H)|\psi>$$
+$$ =  \frac{1}{\sqrt{6}}[(|00> + |01> + |10> + |11>)$$$$ + (|00> - |01> + |10> - |11>) $$$$+ (|00> + |01> - |10> + |11>)]$$
+$$ =  \frac{1}{\sqrt{6}}[3|00>+ |01> + |10> + |11>]$$
+\[
+\boxed{ = \frac{1}{2}|0>_{2} + \frac{1}{6}|1>_{2} + \frac{1}{6}|2>_{2} - \frac{1}{6}|3>_{2}}
+\]
+\section{Deutsch Problem}
+
+Suppose we take $U_{f}$ from the Deutsch problem and compute
+$$(H\otimes 2)U_{f} (H\otimes 2)|11>$$
+Recall that for the Deutsch function:
+\\
+\begin{table}[h]
+\centering
+    \begin{tabular}{|l|l|l|}
+        \hline
+        ~  & X=0 & X=1 \\ \hline
+        $f_{0}$ & 0   & 0   \\ \hline
+        $f_{1}$ & 0   & 1   \\  \hline
+        $f_{2}$ & 1   & 0   \\ \hline
+        $f_{3}$ & 1   & 1   \\
+        \hline
+    \end{tabular}
+\end{table}
+\\
+First let's apply the first hadamard gate and call this intermediate state $|a>$:
+$$|a> = (H\otimes H)|11>$$
+$$= \frac{1}{2} (|0> - |1>)(|0> - |1>)$$
+$$=\frac{1}{2}(|0>|0> - |0>|1> - |1>|0> - |1>|1>)$$
+In computing the Hadamard on this next, a general equation can be set up for the four 'f' functions. Since anything XOR'ed with 0 is itself, and anything XOR'ed with 1 is it's complement, we can write $U_{f}|a>$ as:
+$$U_{f}|a> = \frac{1}{2}[|0>|f(0)> - |0>|\bar{f}(0)> - |1>|f(1)> - |1>|\bar{f}(1)>] $$
+Now let's consider the two cases $f(0)=f(1)$ and $f(0) \neq f(1)$ :
+\\\\ Case 1: $f(0)=f(1)$
+\\This implies we are using either f0 or f3.
+\\\\\\$f_{0}$:
+$$ HU_{f_{0}}|a> = H \frac{1}{2}[|00> - |01> - |10> - |11>]$$
+$$ = \frac{1}{2}[\frac{1}{2}(|00> + |01> + |10> + |11>)
+$$$$ - \frac{1}{2}(|00> - |01> + |10> - |11>)
+$$$$- (\frac{1}{2}(|00> + |01> - |10> + |11>) 
+$$$$- \frac{1}{2}(|00> - |01> - |10> + |11>))]$$
+\[
+\boxed{ = \frac{1}{2}[-|00> + |01> + |10>] \>\>\>\>\>\>(f_{0}) }
+\] 
+\\$f_{3}$:
+$$ HU_{f_{3}}|a> = H  \frac{1}{2}[|01> - |00> - |11> - |10>]$$
+$$ = \frac{1}{4}[ (|00> - |01> + |10> + |11>)
+$$$$ -  (|00> + |01> + |10> + |11>)
+$$$$- (|00> - |01> - |10> + |11>)
+$$$$ - (|00> + |01> - |10> - |11>)]$$
+$$ = \frac{1}{4}[-2|00> + 2|11>$$
+\[
+\boxed{ = \frac{1}{2}[-|00> - |01> + |10> + |11>] 	\>\>\>\>\>\>(f_{3})}
+\]
+\\\\
+Now for the case of $f(0) \neq f(1)$, so we look at f1 and f2. Note that applying U is easy here too, because we are always XOR a bit with it's complement, which always yields 1. Since the input gates will be the same for $f_{1} and f_{2}$, then each should return the same state:
+\\\\
+$f_{1}:$
+$$ HU_{f_1}|a> = H \frac{1}{2}[|00> - |01> - |11> - |10>]  $$
+$$ = \frac{1}{4}[ (|00> + |01> + |10> + |11>)
+$$$$ -  (|00> - |01> + |10> - |11>)
+$$$$- (|00> - |01> - |10> + |11>)
+$$$$ - (|00> + |01> - |10> - |11>)]$$
+$$ = \frac{1}{4}[-2|00> + 2|11>$$
+\[
+\boxed{ = \frac{1}{2}[-|00> + |01> + |10> + |11>] \>\>\>\> (f_{1}) }
+\]
+$f_{2}:$
+$$ HU_{f_3} |a> = H \frac{1}{2}[|01> - |00> - |11> - |10>]$$
+$$ = \frac{1}{4}[ (|00> - |01> + |10> + |11>)
+$$$$ -  (|00> + |01> + |10> - |11>)
+$$$$- (|00> - |01> - |10> + |11>)
+$$$$ - (|00> + |01> - |10> - |11>)]$$
+\[
+\boxed{ = \frac{1}{2}[-|00> - |01> + |10> + |11>] \>\>\>\> (f_{1}) }
+\]
+
+\section{Bernstein-Verizani}
+
+Take f(x) from the Bernstein-Verizani problem and compute:
+$$U_{f}(H^{n \otimes 1})(|0>_{n}|1>_{1})$$
+$$ = U_{f} (\frac{1}{2^{n/2}}\displaystyle\sum\limits_{x=0}^{2^{n} - 1} |x>) \frac{1}{\sqrt{2}}(|0> - |1>)$$
+Since $ U_{f}|x>_{n} \frac{1}{\sqrt{2}}(|0>-|1>) = (-1)^{f(x)}|x>_{n} \frac{1}{\sqrt{2}}(|0> - |1>) $
+$$ = \frac{1}{2^{n/2}} (\displaystyle\sum\limits_{x=0}^{2^{n} - 1} (-1)^{f(x)}|x>) \frac{1}{\sqrt{2}}(|0> - |1>) $$
+\[
+\boxed{ = \frac{1}{2^{(n+1)/2}} (\displaystyle\sum\limits_{x=0}^{2^{n} - 1} (-1)^{f(x)}|x>)(|0> - |1>)}
+\]
+Recall that the function f(x) in the Bernstein-Verizani is $ a \cdot x$. Therefore, f(x) is always either 0 or 1, and so each value in the sum is either $|x>$ or $-|x>$.
+The possible values of the input register are:
+\[
+\boxed{\frac{1}{2^{n/2}} (\displaystyle\sum\limits_{x=0}^{2^{n} - 1} (-1)^{f(x)}|x>)}
+\]
+The only possible value of the output register is the superposed state:
+\[
+\boxed{ \frac{1}{2^{(n+1)/2}}(|0> - |1>)}
+\]
+
+\section{Derive State}
+Derive the state from problem 3 using any 1-bit gates and the 2-bit gate cNOT starting from $|00>$
+Just applying a hadamard to expand leaves a useless state, since all other gates applied maintain the state. So first apply a NOT gate:
+$$|00> = |11>$$
+Applying a hadamard to this yields:
+$$HX|00> =  \frac{1}{2}(|00> - |01> - |10> - |11>)$$
+Applying cNOT gates:
+$$C_{21}HX|00> =  \frac{1}{2}(|00> - |11> - |10> - |01>)$$
+And another cNOT:
+$$C_{12}C_{21}HX|00> =  \frac{1}{2}(|00> - |10> - |11> - |01>)$$
+Applying a Hadamard to this:
+$$HC_{12}C_{21}HX|00> =  \frac{1}{2}(|10> + |11> - (|00> - |01>))$$
+$$ = \frac{1}{2}(|10> + |11> - |00> + |01>)$$
+Presumably at this point I've accomplished something. After like a billion other permutations/attempts, I did get to having just |00>, |01>, |10>, but could never achieve the correct coefficients.
+
+Note that I also tried using a controlled Hadamard.
+
+This is a controlled hadamard gate, that functions just like a cNOT gate except it applies the hadamard operator instead of the NOT operator to the non-control bit.
+$$C_{H_{12}}H|00> =  \frac{1}{2}[|00> + |01> + |1> \frac{1}{\sqrt{2}}(|0> + |1>) + |1>  \frac{1}{\sqrt{2}}(|0> - |1>]$$
+$$ =  \frac{1}{2}[|00> + |01> +  \frac{1}{\sqrt{2}}(|10> +  \frac{1}{\sqrt{2}}|11> +  \frac{1}{\sqrt{2}}|10> -  \frac{1}{\sqrt{2}}|11>]$$
+$$ =  \frac{1}{2}[|00> + |01> + \frac{2}{\sqrt{2}}|10>]$$
+
+Also close, but not quite there
+
+\section{Derive with only one cNOT}
+Although I did not finish the answer to the previous question, this question is essentially the same, because any cNOT gate can be rewritten as:
+$$C_{ij} = \bar{n}_{i} + X_{j}n_{i}$$
+Since there is no limit on the number of 1-bit and type of 1 bit gates we can use, it follows that the pretend answer I got for number 6 is equivalent to this question, but each $C_{ij}$ is replaced with the above equation.
+
+
+
+\section{Numbered formulae}
+
+Useful Hadamards:
+\begin{equation}
+	(H\otimes H) |00> = \frac{1}{2}(|00> + |01> + |10> + |11>)
+\end{equation}
+\begin{equation}
+	(H\otimes H) |01> = \frac{1}{2}(|00> - |01> + |10> - |11>)
+\end{equation}
+\begin{equation}
+	(H\otimes H) |10> = \frac{1}{2}(|00> + |01> - |10> - |11>)
+\end{equation}
+\begin{equation}
+	(H\otimes H) |11> = \frac{1}{2}(|00> - |01> - |10> + |11>)
+\end{equation}
+
+Use the \emph{equation} environment to get numbered formulae, e.g.,
+\begin{equation}
+	y_{i+1} = x_{i}^{2n} - \sqrt{5}x_{i-1}^{n} + \sqrt{x_{i-2}^7} -1
+\end{equation}
+
+\begin{equation}
+	\frac{\partial u}{\partial t} + \nabla^{4}u + \nabla^{2}u +
+        \frac12    |\nabla u|^{2}~ =~ c^2
+\end{equation}
+
+\section{Acknowledgments}
+
+
+
+\end{document} 
