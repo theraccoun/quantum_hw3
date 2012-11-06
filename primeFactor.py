@@ -2,6 +2,7 @@
 
 from random import randint
 import math
+import fractions
 import modularExponentiation
 
 n = 121932632103337941464563328643500519
@@ -34,3 +35,25 @@ def miller_rabin(n):
 	return True
 
 print miller_rabin(n)
+
+
+def pollardRho(n):
+	if n%2 == 0:
+		return n
+
+	x = randint(1, n-1)
+	y = x
+	c = randint(1, n-1)
+	g = 1
+
+	print "x: " , x
+	print "c: " , c
+
+	while g == 1:
+		x = ((x*x)%n+c)%n
+		y = ((y*y)%n+c)%n
+		g = fractions.gcd(abs(x-y), n)
+
+	return g
+
+print "Pollard Rho: " , n , pollardRho(n)

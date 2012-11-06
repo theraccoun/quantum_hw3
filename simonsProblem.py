@@ -2,72 +2,95 @@
 
 import socket
 import sys
+from numpy import *
+from random import randint
 
-# s = socket.socket()
+s = socket.socket()
 host = "annai.cs.colorado.edu"
 port = 443
 
-def is_linearly_independent(bin_string, valid_strings):
-	print "lenval: " , len(valid_strings)
-	if len(valid_strings) == 0: return True
 
-	# xored_strings = bin_string
 
-	# for li_string in valid_strings:
+def is_linearly_independent(mat):
+	if len(mat) == 0:
+		return True
+	print "--------------------------------------"
+	print array(mat)
+	cur_row = len(mat) - 1
 
-	# 	for c in range(len(li_string)):
-	# 		if int(li_string[i]) ^ int(xored_strings[i] == 1:
-	# 			break
+	for col in range(len(mat[cur_row])):
+		print "cur_matrix[",cur_row,'][',col,'] = ' , mat[cur_row][col]
+		# raw_input()
+		if mat[cur_row][col] == 1:
+			for look_up in range(1, cur_row + 2):
+				print "look_up: " , look_up
+				if cur_row - look_up < 0:
+					print "Searched all the way up!"
+					return True
+				if mat[cur_row-look_up][col] == 1:
+					is_generate_new_row = True
+					#look left to see if that row contains an earlier pivot
+					if col != 0:
+						for i in range(1, col+1):
+							print "above and to da left: " , mat[cur_row-look_up][col-i] 
+							# raw_input()
+							if mat[cur_row-look_up][col-i] == 1:
+								is_generate_new_row = False
+								break
 
-	# 	if xored_strings == 0:
-	# 		return False
-		
-	# return True
-
-	for i in range(len(bin_string)):
-
-		xor_at_col = int(bin_string[i])
-
-		for li in valid_strings:
-			xor_at_col ^= int(li[i])
-
-		if xor_at_col > 0:
-			return True
+					if is_generate_new_row:
+						new_row = []
+						for c in range(len(mat[cur_row])):
+							# print "cur_row: " , cur_row
+							# print "c: " , c
+							# print "mat[cur_row][c] " , mat[cur_row][c]
+							# print "blah " , mat[cur_row-look_up][c]
+							# print "XOR: " , mat[cur_row][c] , mat[cur_row-look_up][c]
+							new_row.append(mat[cur_row][c] ^ mat[cur_row-look_up][c])
+						mat[cur_row] = new_row
+						print "NEW ROW: \n" , array(mat)
+						break
 
 	return False
 
-def is_linearly_independent(s1, s2):
-	if len(s1) != len(s2):
-		print "lengths must match"
-		sys.exit()
+	# for col in range(len(cur_matrix[cur_row])):
+	# 	print "cur_matrix[",cur_row,'][',col,'] = ' , cur_matrix[cur_row][col]
+	# 	raw_input()
 
-	for i in range(len(s1)):
-		if s1[i] != s2[i]:
-			return True
+	# 	if cur_matrix[cur_row][col] == 0:
+	# 		print "0!"
+	# 		continue
+	# 	else:
+	# 		print "meow"
+	# for r in range(len(cur_matrix)):
+	# 	for c in range(r+1):
+	# 		print "cur_matrix[",r,'][',c,'] = ' , cur_matrix[r][c]
+	# 		raw_input()
 
-	return False
+	return True
+
+def gaussian_elimination():
+	mat = []
+	s.connect((host, port));
+	y = ""
+	while len(mat) < 4:
+		for i in range(4):
+			y += str(randint(0,1))
+		y = [int(bit) for bit in y]
+		mat.append(y)
+		#y = s.recv(1024).replace("\n", "")
+		if is_linearly_independent(mat):
+			print "IS LIN!!!!!"
+		else:
+			mat.pop()
+			print "NOT LIN HAHAHAHH"
+		y = ""
+
+	print "FINAL ANS: \n" , array(mat)
 
 
-def get_all_linearly_indp_strings():
-	lin_indep_strings = []
-
-	for i in range(20):
-		s = socket.socket()
-		s.connect((host, port))
-		bstrn_from_server = s.recv(1024).replace("\n", "")
-
-		if len(bstrn_from_server) != 128: continue	 
-
-		print "meow: " , bstrn_from_server
-		print "lin_ind_list: " , lin_indep_strings
-
-		if is_linearly_independent(bstrn_from_server, lin_indep_strings):
-			lin_indep_strings.append(bstrn_from_server)
-
-		s.close()
-
-print "IS_LIN? " , is_linearly_independent("11101", "10101")
-# get_all_linearly_indp_strings()
+#mat = array([[0 for x in range(5)] for y in range(5)])
+gaussian_elimination()
 
 
 
