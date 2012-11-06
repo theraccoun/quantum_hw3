@@ -69,6 +69,25 @@ def is_linearly_independent(mat):
 
 	return True
 
+def make_lower_triangular(my_array):
+	for r in range(len(my_array)):
+
+		pivot_found = False
+		c = 0
+		while not pivot_found:
+			if my_array[r][c] == 1:
+				print my_array[r][c]
+				if r != c:
+					temp = copy(my_array[c])
+					my_array[c] = my_array[r]
+					my_array[r] = temp
+
+				pivot_found = True
+			else:
+				c += 1
+
+	return my_array
+
 def gaussian_elimination():
 	mat = []
 	s.connect((host, port));
@@ -87,6 +106,7 @@ def gaussian_elimination():
 		y = ""
 
 	print "FINAL ANS: \n" , array(mat)
+	print make_lower_triangular(array(mat))
 
 
 #mat = array([[0 for x in range(5)] for y in range(5)])
