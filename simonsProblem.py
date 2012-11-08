@@ -15,12 +15,13 @@ def is_linearly_independent(mat):
 	if len(mat) == 0:
 		return True
 	# print "--------------------------------------"
-	# print array(mat)
+	# print "ar: \n" , array(mat)
 	cur_row = len(mat) - 1
 
 	for col in range(len(mat[cur_row])):
 		# print "cur_matrix[",cur_row,'][',col,'] = ' , mat[cur_row][col]
 		# raw_input()
+		# print cur_row, mat[cur_row]
 		if mat[cur_row][col] == 1:
 			for look_up in range(1, cur_row + 2):
 
@@ -45,7 +46,13 @@ def is_linearly_independent(mat):
 							# 	examine_row_value = int(examine_row_value.replace("|",""))
 							# 	cur_row_value = int(cur_row_value.replace("|",""))
 							# 	xored = cur_row_value ^ examine_row_value
+							# 	print cur_row_value, examine_row_value, xored
+							# 	print "examine: " , mat[examine_row_for_piv]
+							# 	print "cur: " , mat[cur_row]
+							# 	raw_input()
 							# 	new_row.append("|" + str(xored))
+							# 	print xored
+							# 	print "NEW: " , new_row
 							# else:
 							# 	new_row.append(cur_row_value ^ examine_row_value)
 							new_row.append(cur_row_value ^ examine_row_value)
@@ -98,8 +105,11 @@ def make_lower_triangular(my_array):
 	return my_array
 
 def get_all_linear_independents():
-	mat = []
-	mat_size = 128
+	mat_size = 4
+	first_row = [0 for z in range(mat_size-1)]
+	first_row.append(1)
+	# first_row.append("|1")
+	mat = [first_row]
 	y = ""
 	trials = 0
 	while len(mat) < mat_size:
@@ -109,14 +119,15 @@ def get_all_linear_independents():
 		# s.connect((host, port));
 		# y = s.recv(2048).replace("\n", "")
 		# s.close()
-		# y = y[:mat_size]
+		y = y[:mat_size]
 		y = [int(bit) for bit in y]
-		
 		if len(y) != mat_size:
 			continue
 		# y.append("|0")
 
 		mat.append(y)
+		# print len(mat)
+		# print mat
 		if not is_linearly_independent(mat):
 			mat.pop()
 
@@ -131,7 +142,11 @@ def get_all_linear_independents():
 	# print "TRIALS: " , trials
 	# print "LOWER TRIANG: \n" , make_lower_triangular(array(mat))
 
-	return trials
+	return [mat,trials]
+
+def xor_two_rows(piv_row, second, mat):
+	for i in range(len(mat[piv_row])):
+		mat[piv_row][i] = mat[piv_row][i] ^ mat[second][i]
 
 def avg_lin_trials(num_tries):
 	avg_trial = 0
@@ -142,10 +157,43 @@ def avg_lin_trials(num_tries):
 	return avg_trial/num_tries
 
 
+def gaussian_elimination(mat):
+	print "first: \n" , mat
+	m = len(mat[0])
+	for r in range(size(mat)-2):
+		for col in range(r+1, m-1):
+			if mat[r][col] == 1:
+				xor_two_rows(r, col, mat)
+				# print "NEW_MAT: \n" , mat
+				# raw_input()
+				# print "r+1=", r+1
+				# for check_row in range(r+1, size(mat)):
+				# 	# print col
+				# 	# print mat[r]
+				# 	# print mat[check_row]
+				# 	raw_input()
+				# 	if mat[check_row][col] == 1:
+				# 		xor_two_rows(r, check_row, mat)
+				# 		break
 
+	print "second: \n" , mat
+
+def add_b_vec(mat):
+	mat[0].append(1)
+	for r in range(1, len(mat)):
+		mat[r].append(0)
+
+amat = get_all_linear_independents()[0]
+add_b_vec(amat)
+print amat
+amat = array(amat)
+amat = make_lower_triangular(amat)
+
+
+gaussian_elimination(amat)
 #mat = array([[0 for x in range(5)] for y in range(5)])
-avg_trials = avg_lin_trials(100)
-print "AVG TRIALS: " , avg_trials
+# avg_trials = avg_lin_trials(3)
+# print "AVG TRIALS: " , avg_trials
 
 
 
