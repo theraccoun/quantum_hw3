@@ -14,19 +14,19 @@ port = 443
 def is_linearly_independent(mat):
 	if len(mat) == 0:
 		return True
-	print "--------------------------------------"
-	print array(mat)
+	# print "--------------------------------------"
+	# print array(mat)
 	cur_row = len(mat) - 1
 
-	for col in range(len(mat[cur_row])-1):
-		print "cur_matrix[",cur_row,'][',col,'] = ' , mat[cur_row][col]
+	for col in range(len(mat[cur_row])):
+		# print "cur_matrix[",cur_row,'][',col,'] = ' , mat[cur_row][col]
 		# raw_input()
 		if mat[cur_row][col] == 1:
 			for look_up in range(1, cur_row + 2):
-				print "look_up: " , look_up
+
 				examine_row_for_piv = cur_row-look_up
 				if cur_row - look_up < 0:
-					print "Searched all the way up!"
+					# print "cur_row=" , cur_row
 					return True
 				if mat[examine_row_for_piv][col] == 1:
 
@@ -41,16 +41,17 @@ def is_linearly_independent(mat):
 							# print "c=" , c, " len=" , len(mat[cur_row])-1
 							# raw_input()
 
-							if c == len(mat[cur_row])-1:
-								examine_row_value = int(examine_row_value.replace("|",""))
-								cur_row_value = int(cur_row_value.replace("|",""))
-								xored = cur_row_value ^ examine_row_value
-								new_row.append("|" + str(xored))
-							else:
-								new_row.append(cur_row_value ^ examine_row_value)
+							# if c == len(mat[cur_row])-1:
+							# 	examine_row_value = int(examine_row_value.replace("|",""))
+							# 	cur_row_value = int(cur_row_value.replace("|",""))
+							# 	xored = cur_row_value ^ examine_row_value
+							# 	new_row.append("|" + str(xored))
+							# else:
+							# 	new_row.append(cur_row_value ^ examine_row_value)
+							new_row.append(cur_row_value ^ examine_row_value)
+
 
 						mat[cur_row] = new_row
-						print "NEW ROW: \n" , array(mat)
 						break
 
 	return False
@@ -59,8 +60,6 @@ def is_linearly_independent(mat):
 def row_contains_earlier_pivot(examine_row, col, mat):
 	if col != 0:
 		for i in range(1, col+1):
-			print "above and to da left: " , mat[examine_row][col-i] 
-			# raw_input()
 			if mat[examine_row][col-i] == 1:
 				return False
 	return True
@@ -98,31 +97,55 @@ def make_lower_triangular(my_array):
 
 	return my_array
 
-def gaussian_elimination():
+def get_all_linear_independents():
 	mat = []
-	mat_size = 4
-	s.connect((host, port));
+	mat_size = 128
 	y = ""
+	trials = 0
 	while len(mat) < mat_size:
 		for i in range(mat_size):
 			y += str(randint(0,1))
+		# s = socket.socket()
+		# s.connect((host, port));
+		# y = s.recv(2048).replace("\n", "")
+		# s.close()
+		# y = y[:mat_size]
 		y = [int(bit) for bit in y]
-		y.append("|0")
+		
+		if len(y) != mat_size:
+			continue
+		# y.append("|0")
+
 		mat.append(y)
-		#y = s.recv(1024).replace("\n", "")
-		if is_linearly_independent(mat):
-			print "IS LIN!!!!!"
-		else:
+		if not is_linearly_independent(mat):
 			mat.pop()
-			print "NOT LIN HAHAHAHH"
+
+		trials += 1
+		# if trials%50 == 0:
+		# 	print "TRIALS=" , trials
+
 		y = ""
 
-	print "FINAL ANS: \n" , array(mat)
-	print "LOWER TRIANG: \n" , make_lower_triangular(array(mat))
+	# print "FINAL ANS: \n" , array(mat)
+	# print "------------------------------------"
+	# print "TRIALS: " , trials
+	# print "LOWER TRIANG: \n" , make_lower_triangular(array(mat))
+
+	return trials
+
+def avg_lin_trials(num_tries):
+	avg_trial = 0
+	for i in range(num_tries):
+		print i
+		avg_trial += get_all_linear_independents()
+
+	return avg_trial/num_tries
+
 
 
 #mat = array([[0 for x in range(5)] for y in range(5)])
-gaussian_elimination()
+avg_trials = avg_lin_trials(100)
+print "AVG TRIALS: " , avg_trials
 
 
 
