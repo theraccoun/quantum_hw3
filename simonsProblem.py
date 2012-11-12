@@ -68,6 +68,7 @@ def make_lower_triangular(my_array):
 
 def get_all_linear_independents(mat_size, from_server):
 	first_row = [0 for z in range(mat_size-1)]
+	original = [[f for f in first_row]]
 	first_row.append(1)
 	mat = [first_row]
 	y = ""
@@ -90,12 +91,14 @@ def get_all_linear_independents(mat_size, from_server):
 		
 		if not is_linearly_independent(mat):
 			mat.pop()
+		else:
+			original.append(y)
 
 		trials += 1
 
 		y = ""
 
-	return [mat,trials]
+	return [mat,trials, original]
 
 def xor_two_rows(piv_row, second, mat):
 	for i in range(len(mat[piv_row])):
@@ -109,6 +112,15 @@ def avg_lin_trials(num_tries):
 
 	return avg_trial/num_tries
 
+def dot_prod_of_binary_vectors(a, b):
+	if len(a) != len(b): return
+
+	dot = int(a[0]) and int(b[0])
+
+	for i in range(1, len(a)):
+		dot ^= int(a[i]) and int(b[i])
+
+	return dot
 
 def gaussian_elimination(mat):
 	print "first: \n" , mat
@@ -122,7 +134,7 @@ def gaussian_elimination(mat):
 	print "second: \n" , mat
 	return mat
 
-def get_a(mat):
+def solve_for_a(mat):
 	ident = gaussian_elimination(mat)
 
 	a = ""
@@ -135,15 +147,40 @@ def add_b_vec(mat):
 	for r in range(1, len(mat)):
 		mat[r].append(0)
 
-amat = get_all_linear_independents(128, True)[0]
+def test_mat(a, original):
+	for r in range(len(original)):
+		test = original[r]
+		test_str = ""
+		for c in range(len(test)):
+			test_str += str(original[r][c])
+
+		print "a: " , a
+		print len(a)
+		print "test_str: " , test_str
+		print len(test_str)
+		raw_input()
+
+		dot_with_a = dot_prod_of_binary_vectors(a, test_str)
+
+		if dot_with_a != 0:
+			print "BAD VECTOR!"
+			print "row: " , r
+			print dot_with_a
+
+meta_lins = get_all_linear_independents(4, False)
+amat = meta_lins[0]
+trials = meta_lins[1]
+original = meta_lins[2]
 print amat
 add_b_vec(amat)
 amat = array(amat)
 make_lower_triangular(amat)
 
-
-a = get_a(amat)
+a = solve_for_a(amat)
 print "A=", a
+raw_input()
+test_mat(a, original)
+
 
 
 
