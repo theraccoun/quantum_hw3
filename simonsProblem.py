@@ -104,8 +104,7 @@ def make_lower_triangular(my_array):
 
 	return my_array
 
-def get_all_linear_independents():
-	mat_size = 4
+def get_all_linear_independents(mat_size, from_server):
 	first_row = [0 for z in range(mat_size-1)]
 	first_row.append(1)
 	# first_row.append("|1")
@@ -113,12 +112,14 @@ def get_all_linear_independents():
 	y = ""
 	trials = 0
 	while len(mat) < mat_size:
-		for i in range(mat_size):
-			y += str(randint(0,1))
-		# s = socket.socket()
-		# s.connect((host, port));
-		# y = s.recv(2048).replace("\n", "")
-		# s.close()
+		if not from_server:
+			for i in range(mat_size):
+				y += str(randint(0,1))
+		else:
+			s = socket.socket()
+			s.connect((host, port));
+			y = s.recv(2048).replace("\n", "")
+			s.close()
 		y = y[:mat_size]
 		y = [int(bit) for bit in y]
 		if len(y) != mat_size:
@@ -132,8 +133,8 @@ def get_all_linear_independents():
 			mat.pop()
 
 		trials += 1
-		# if trials%50 == 0:
-		# 	print "TRIALS=" , trials
+		if trials%50 == 0:
+			print "TRIALS=" , trials
 
 		y = ""
 
@@ -160,37 +161,37 @@ def avg_lin_trials(num_tries):
 def gaussian_elimination(mat):
 	print "first: \n" , mat
 	m = len(mat[0])
+	a = ""
 	for r in range(size(mat)-2):
 		for col in range(r+1, m-1):
 			if mat[r][col] == 1:
 				xor_two_rows(r, col, mat)
-				# print "NEW_MAT: \n" , mat
-				# raw_input()
-				# print "r+1=", r+1
-				# for check_row in range(r+1, size(mat)):
-				# 	# print col
-				# 	# print mat[r]
-				# 	# print mat[check_row]
-				# 	raw_input()
-				# 	if mat[check_row][col] == 1:
-				# 		xor_two_rows(r, check_row, mat)
-				# 		break
 
 	print "second: \n" , mat
+	return mat
+
+def get_a(mat):
+	ident = gaussian_elimination(mat)
+
+	a = ""
+	for r in range(len(ident)):
+		a += str(ident[r][len(ident)])
+	return a
 
 def add_b_vec(mat):
 	mat[0].append(1)
 	for r in range(1, len(mat)):
 		mat[r].append(0)
 
-amat = get_all_linear_independents()[0]
+amat = get_all_linear_independents(128, True)[0]
 add_b_vec(amat)
 print amat
 amat = array(amat)
 amat = make_lower_triangular(amat)
 
 
-gaussian_elimination(amat)
+a = get_a(amat)
+print "A=", a
 #mat = array([[0 for x in range(5)] for y in range(5)])
 # avg_trials = avg_lin_trials(3)
 # print "AVG TRIALS: " , avg_trials
