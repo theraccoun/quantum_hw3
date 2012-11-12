@@ -17,7 +17,7 @@ def is_linearly_independent(mat):
 
 	cur_row = len(mat) - 1
 
-	for col in range(len(mat[cur_row])):
+	for col in range(len(mat[cur_row])-1):
 		if mat[cur_row][col] == 1:
 			for look_up in range(1, cur_row + 2):
 
@@ -27,16 +27,21 @@ def is_linearly_independent(mat):
 				if mat[examine_row_for_piv][col] == 1:
 
 					if row_contains_earlier_pivot(examine_row_for_piv, col, mat):
-						new_row = []
+						# print "BEFORE: \n" , array(mat)
+						# print cur_row, examine_row_for_piv
+						xor_two_rows(cur_row, examine_row_for_piv, mat)
+						# print "AFTER: \n" , array(mat)
+						# raw_input()
+						# new_row = []
 
-						for c in range(len(mat[cur_row])):
+						# for c in range(len(mat[cur_row])):
 
-							examine_row_value =  mat[examine_row_for_piv][c]
-							cur_row_value = mat[cur_row][c]
-							new_row.append(cur_row_value ^ examine_row_value)
+						# 	examine_row_value =  mat[examine_row_for_piv][c]
+						# 	cur_row_value = mat[cur_row][c]
+						# 	new_row.append(cur_row_value ^ examine_row_value)
 
 
-						mat[cur_row] = new_row
+						# mat[cur_row] = new_row
 						break
 
 	return False
@@ -66,17 +71,49 @@ def make_lower_triangular(my_array):
 
 	return my_array
 
+def get_random_a(init_y):
+	a = ""
+	initial_y = ""
+	for i in range(len(init_y)-1):
+		initial_y += str(init_y[i])
+
+	while True:
+		for i in range(len(initial_y)):
+			a += str(randint(0,1))
+
+		print a, initial_y
+		a_dot_y = dot_prod_of_binary_vectors(a, initial_y)
+		if a_dot_y == 1:
+			break
+		else:
+			a = "" 
+	
+	print "A=" , a
+	return a
+
 def get_all_linear_independents(mat_size, from_server):
+		
 	first_row = [0 for z in range(mat_size-1)]
-	original = [[f for f in first_row]]
 	first_row.append(1)
+	first_row.append(1)
+	if not from_server:
+		a = get_random_a([fro for fro in first_row])
+
+	original = [[f for f in first_row]]
 	mat = [first_row]
 	y = ""
 	trials = 0
 	while len(mat) < mat_size:
 		if not from_server:
-			for i in range(mat_size):
-				y += str(randint(0,1))
+			while True:
+				for i in range(mat_size):
+					y += str(randint(0,1))
+
+				a_dot_y = dot_prod_of_binary_vectors(a, y)
+				if a_dot_y == 0:
+					break
+				else:
+					y = ""
 		else:
 			s = socket.socket()
 			s.connect((host, port));
@@ -84,8 +121,8 @@ def get_all_linear_independents(mat_size, from_server):
 			s.close()
 		y = y[:mat_size]
 		y = [int(bit) for bit in y]
-		if len(y) != mat_size:
-			continue
+		y.append(0)
+		# print "mat: \n" , array(mat)
 
 		mat.append(y)
 		
@@ -95,8 +132,7 @@ def get_all_linear_independents(mat_size, from_server):
 			original.append(y)
 
 		trials += 1
-
-		y = ""
+		y = []
 
 	return [mat,trials, original]
 
@@ -151,14 +187,14 @@ def test_mat(a, original):
 	for r in range(len(original)):
 		test = original[r]
 		test_str = ""
-		for c in range(len(test)):
+		for c in range(len(test)-1):
 			test_str += str(original[r][c])
 
-		print "a: " , a
-		print len(a)
-		print "test_str: " , test_str
-		print len(test_str)
-		raw_input()
+		# print "a: " , a
+		# print len(a)
+		# print "test_str: " , test_str
+		# print "row: " , row
+		# raw_input()
 
 		dot_with_a = dot_prod_of_binary_vectors(a, test_str)
 
@@ -167,16 +203,20 @@ def test_mat(a, original):
 			print "row: " , r
 			print dot_with_a
 
-meta_lins = get_all_linear_independents(4, False)
+meta_lins = get_all_linear_independents(128, True)
 amat = meta_lins[0]
 trials = meta_lins[1]
 original = meta_lins[2]
-print amat
-add_b_vec(amat)
+# print amat
+# add_b_vec(amat)
 amat = array(amat)
 make_lower_triangular(amat)
 
 a = solve_for_a(amat)
+original = array(original)
+# print "original: \n" , array(original)
+make_lower_triangular(original)
+print "original: \n" , array(original)
 print "A=", a
 raw_input()
 test_mat(a, original)
