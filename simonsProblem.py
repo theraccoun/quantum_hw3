@@ -166,6 +166,7 @@ def insert_last_row(mat, last_piv, original):
 
 def xor_two_rows(piv_row, second, mat):
 	for i in range(len(mat[piv_row])):
+		print piv_row, second
 		mat[piv_row][i] = mat[piv_row][i] ^ mat[second][i]
 
 def avg_lin_trials(num_tries):

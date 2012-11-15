@@ -28,10 +28,11 @@ def extended_euclid(u, v):
 
 def common_modexp_attack(e1, e2, n, c1, c2):
 	u, v = extended_euclid(e1, e2)
+	print u,v
 	print "meow:", (e1*u)%e2
 	d = u%e2
 	f = (d*e1-1)/e2
-	M = pow(c1,d, n) * pow(c2,n-f, n)
+	M = (pow(c1,v+n, n) * pow(c2,u, n))%n
 	print "M: \n" , M
 	return M
 
