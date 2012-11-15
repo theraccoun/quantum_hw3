@@ -148,9 +148,7 @@ def get_all_linear_independents(mat_size, from_server):
 		trials += 1
 		y = []
 
-	print "bef ins: \n" , mat
 	insert_last_row(mat, pivs_used[0], original)
-	print "pos: \n" , mat
 	return [mat,trials, original]
 
 def insert_last_row(mat, last_piv, original):
@@ -173,7 +171,6 @@ def xor_two_rows(piv_row, second, mat):
 def avg_lin_trials(num_tries):
 	avg_trial = 0
 	for i in range(num_tries):
-		print i
 		avg_trial += get_all_linear_independents()
 
 	return avg_trial/num_tries
@@ -236,26 +233,28 @@ def test_mat(a, original):
 			print a
 			print test_str
 
-meta_lins = get_all_linear_independents(128, True)
-amat = meta_lins[0]
-trials = meta_lins[1]
-original = meta_lins[2]
-# print amat
-# add_b_vec(amat)
-amat = array(amat)
-print amat
-make_lower_triangular(amat)
+def run_proc():
+	meta_lins = get_all_linear_independents(128, True)
+	amat = meta_lins[0]
+	trials = meta_lins[1]
+	amat = array(amat)
+	make_lower_triangular(amat)
 
-a = solve_for_a(amat)
-original = array(original)
-# print "original: \n" , array(original)
-make_lower_triangular(original)
-print "original: \n" , array(original)
-print "A=" , a
-print "A=", get_string_value(a)
-raw_input()
-test_mat(a, original)
+	a = solve_for_a(amat)
+	print "trials = " , trials
+	print "A=", get_string_value(a)
 
+	return a, trials
+
+
+def avg_trials():
+	trials = 0
+	for i in range(10):
+		trials += run_proc()[1]
+
+	return trials/10
+
+print avg_trials()
 
 
 

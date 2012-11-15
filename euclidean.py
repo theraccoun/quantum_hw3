@@ -31,15 +31,7 @@ def common_modexp_attack(e1, e2, n, c1, c2):
 	print "meow:", (e1*u)%e2
 	d = u%e2
 	f = (d*e1-1)/e2
-	print f
-	y2 = pow(c2, -f)
-	print y2
-	y2_inv = extended_euclid(y2, n)
-	print "Y: \n" , y2_inv
-	a = pow(c1,d, n)
-	print a
-	b = modularExponentiation.modular_exponentiation(c2, f, n)	
-	M = a*b
+	M = pow(c1,d, n) * pow(c2,n-f, n)
 	print "M: \n" , M
 	return M
 

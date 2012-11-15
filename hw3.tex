@@ -44,11 +44,15 @@ different attacks. Turns out that it is fairly well documented, and Simmons wrot
 The basic idea is:
 Since \[gcd(e_1,e_2) = 1\],
 then \[\exists u, v   \;  s.t.   \;  e_1*u + e_2*v = 1\]
-You can use this to fact to find M: \[(M^{e_1} mod n)^u {(M^{e_2} mod n)}^v = M^{e_1*u + e_2*v} mod n = M mod n\]
-
-So, to get $e_2$ and $e_1$, I just use the Euclidean algorithm:
-
-
+To solve for u and v, I used the extended Euclidean algorithm.
+I found the key step using next using http://www-math.ucdenver.edu/~wcherowi/courses/m5410/ctcpf.html.
+\\Since u is the multiplicative inverse of $e_1$ mod $e_2$, I can set  \[d = u \% e_2\] \[f = (db-1)/c\]
+From this I can multiply $c1^d$ and $(c2^f)^{-1}$: \[c1^d * (c2^f)^{-1} = M^{bd}M^{-ce} = M^{bd-ce}=M mod  \; n\]
+Because my modular exponentiation code can't handle negatives, note that $c2^{-f} \; mod \; n = c2^{n-f} mod \; n$
+My attached code computes: \[c1^d * c2^{n-f} mod \; n\] As the following big ass number:
+\\673370853263257965646963259179397225628008143563852220775606027852825698\\78305166652681510415055212454150081059
+\\4303492288369096736114191743795403582324250444021435304630
+\\3868456928963315339456746860255392803655465512
 
 
 \section{Prime factorization}
