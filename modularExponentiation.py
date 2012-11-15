@@ -8,3 +8,4 @@ def modular_exponentiation(base, exponent, modulus):
 	return c
 
 print modular_exponentiation(1234, 1234*1234, math.pow(10, 10))
+print pow(1234, 1234*1234, int(math.pow(10,10)))

@@ -35,6 +35,21 @@ And the output was: \[\boxed{3102217216.0}\]
 
 \section{RSA Misuse}
 
+I first tried to solve this as strictly a math problem, but had little success, in large part because I thought that
+the gcd(e1, e2) was somehow irrelevant to the problem. However, I noticed that normally the exponents are the same value
+when performing RSA, so I scoured google to see if there was some well known attack where you have a common modulus with
+different attacks. Turns out that it is fairly well documented, and Simmons wrote a paper on it a while back.
+
+The basic idea is:
+Since \[gcd(e_1,e_2) = 1\],
+then \[\exists u, v   \;  s.t.   \;  e_1*u + e_2*v = 1\]
+You can use this to fact to find M: \[(M^{e_1} mod n)^u {(M^{e_2} mod n)}^v = M^{e_1*u + e_2*v} mod n = M mod n\]
+
+So, to get $e_2$ and $e_1$, I just use the Euclidean algorithm:
+
+
+
+
 \section{Prime factorization}
 
 Problem: Consider n=121932632103337941464563328643500519

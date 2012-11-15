@@ -55,15 +55,19 @@ def row_contains_earlier_pivot(examine_row, col, mat):
 	return True
 
 def make_lower_triangular(my_array):
-	for r in range(len(my_array)):
+	r = 0
+	while r < len(my_array):
 
 		pivot_found = False
 		for c in range(len(my_array[r])-1):
 			if int(my_array[r][c]) == 1:
 				if r != c:
+					print r,c
 					temp = copy(my_array[c])
 					my_array[c] = my_array[r]
 					my_array[r] = temp
+				else:
+					r += 1
 
 				break
 			else:
@@ -201,9 +205,10 @@ def test_mat(a, original):
 		if dot_with_a != 0:
 			print "BAD VECTOR!"
 			print "row: " , r
-			print dot_with_a
+			print a
+			print test_str
 
-meta_lins = get_all_linear_independents(128, True)
+meta_lins = get_all_linear_independents(128, False)
 amat = meta_lins[0]
 trials = meta_lins[1]
 original = meta_lins[2]

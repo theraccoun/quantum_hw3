@@ -1,0 +1,53 @@
+#!/usr/bin/python
+
+#Extended Euclid
+
+import math
+import modularExponentiation
+
+def extended_euclid(u, v):
+	u1 = 1
+	u2 = 0
+	u3 = u
+	v1 = 0
+	v2 = 1
+	v3 = v
+	while v3 != 0:
+		q = u3 / v3
+		t1 = u1 - q * v1
+		t2 = u2 - q * v2
+		t3 = u3 - q * v3
+		u1 = v1
+		u2 = v2
+		u3 = v3
+		v1 = t1
+		v2 = t2
+		v3 = t3
+
+	return u1, u2
+
+def common_modexp_attack(e1, e2, n, c1, c2):
+	u, v = extended_euclid(e1, e2)
+	print "meow:", (e1*u)%e2
+	d = u%e2
+	f = (d*e1-1)/e2
+	print f
+	y2 = pow(c2, -f)
+	print y2
+	y2_inv = extended_euclid(y2, n)
+	print "Y: \n" , y2_inv
+	a = pow(c1,d, n)
+	print a
+	b = modularExponentiation.modular_exponentiation(c2, f, n)	
+	M = a*b
+	print "M: \n" , M
+	return M
+
+
+e_1 = 65537
+e_2 = 65539
+c1 = 400030256839145194441034228199292487980894977737102147552044462667917219509871638663296814615652770720888715
+c2 = 48384876797138828670281479166255073593234801358795810198774095180850824157124747742456773738763877257747936
+n = 640434271860669796692811836922138143942513719203565769421924022297363333847089887235971007435680486193657059
+
+common_modexp_attack(e_1, e_2, n, c1, c2)
