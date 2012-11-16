@@ -4,6 +4,7 @@ import math
 def modular_exponentiation(base, exponent, modulus):
 	c = 1
 	for e_prime in range(1, exponent+1):
+		print e_prime
 		c = (c * base) % modulus
 	return c
 

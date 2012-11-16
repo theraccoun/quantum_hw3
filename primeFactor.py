@@ -56,4 +56,5 @@ def pollardRho(n):
 
 	return g
 
-print "Pollard Rho: " , n , pollardRho(n)
+print "MILLER: " , miller_rabin(n)
+# print "Pollard Rho: " , n , pollardRho(n)
