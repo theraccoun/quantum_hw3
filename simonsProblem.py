@@ -10,7 +10,6 @@ host = "annai.cs.colorado.edu"
 port = 443
 
 
-
 def is_linearly_independent(mat, pivs_used):
 	if len(mat) == 0:
 		return True
@@ -28,21 +27,7 @@ def is_linearly_independent(mat, pivs_used):
 				if mat[examine_row_for_piv][col] == 1:
 
 					if row_contains_earlier_pivot(examine_row_for_piv, col, mat):
-						# print "BEFORE: \n" , array(mat)
-						# print cur_row, examine_row_for_piv
 						xor_two_rows(cur_row, examine_row_for_piv, mat)
-						# print "AFTER: \n" , array(mat)
-						# raw_input()
-						# new_row = []
-
-						# for c in range(len(mat[cur_row])):
-
-						# 	examine_row_value =  mat[examine_row_for_piv][c]
-						# 	cur_row_value = mat[cur_row][c]
-						# 	new_row.append(cur_row_value ^ examine_row_value)
-
-
-						# mat[cur_row] = new_row
 						break
 
 	return False
@@ -74,25 +59,6 @@ def make_lower_triangular(my_array):
 
 	return my_array
 
-# def get_random_a(init_y):
-# 	a = ""
-# 	initial_y = ""
-# 	for i in range(len(init_y)-1):
-# 		initial_y += str(init_y[i])
-
-# 	while True:
-# 		for i in range(len(initial_y)):
-# 			a += str(randint(0,1))
-
-# 		print a, initial_y
-# 		a_dot_y = dot_prod_of_binary_vectors(a, initial_y)
-# 		if a_dot_y == 1:
-# 			break
-# 		else:
-# 			a = "" 
-	
-# 	print "A=" , a
-# 	return a
 
 def get_random_a(size):
 	a = ""
@@ -103,15 +69,9 @@ def get_random_a(size):
 	return a
 
 def get_all_linear_independents(mat_size, from_server):
-		
-	# first_row = [0 for z in range(mat_size-1)]
-	# first_row.append(1)
-	# first_row.append(1)
 	if not from_server:
 		a = get_random_a(mat_size)
 
-	# original = [[f for f in first_row]]
-	# mat = [first_row]
 	original = []
 	mat = []
 	pivs_used = [p for p in range(mat_size)]
@@ -136,7 +96,6 @@ def get_all_linear_independents(mat_size, from_server):
 		y = y[:mat_size]
 		y = [int(bit) for bit in y]
 		y.append(0)
-		# print "mat: \n" , array(mat)
 
 		mat.append(y)
 		
@@ -166,7 +125,8 @@ def insert_last_row(mat, last_piv, original):
 
 def xor_two_rows(piv_row, second, mat):
 	for i in range(len(mat[piv_row])):
-		print piv_row, second
+		if len(mat[piv_row]) == 0: print mat[piv_row]
+		if len(mat[second])== 0: print mat[second]
 		mat[piv_row][i] = mat[piv_row][i] ^ mat[second][i]
 
 def avg_lin_trials(num_tries):
