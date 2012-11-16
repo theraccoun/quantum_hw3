@@ -174,7 +174,8 @@ def add_b_vec(mat):
 def get_string_value(s):
 	val = 0
 	for i in range(len(s)):
-		val += pow(2,i)
+		pos = len(s)-1-i
+		val += pow(2,i) * int(s[pos])
 
 	return val
 
@@ -203,6 +204,7 @@ def run_proc():
 
 	a = solve_for_a(amat)
 	print "trials = " , trials
+	print "A=" , a
 	print "A=", get_string_value(a)
 
 	return a, trials
