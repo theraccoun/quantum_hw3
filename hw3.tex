@@ -20,8 +20,7 @@
 \boxed{67866407927622586744034130520498283665}
 \]
 \\(c) I reported an average of 152 trials
-\\(d) 
-
+\\(d) For the first query there are $(1/2)*2^n = 2^{n-1}$ possible outputs, since only half will dot with a to zero. All of these except zero will be LI, so there are $2^{n-1}-1$ valid strings, making the probability on the first try $(2^{n-1}-1)/2^{n-1}$ and so the number of queries is $2^{n-1}/(2^{n-1}-1)$. For the next string, the only LD vectors are 0 and the previous one, so  the expected number of queries for the second string is $2^{n-1}/(2^{n-1}-2)$. So, at each stage, the number of valid strings is $2^{n-1}-(numPrevStrings+1)$, so for the last string it should be $2^{n-1}/(2^{n-1}-2^{n-2}) = 2^{n-1}/2^{n-2}= 2$
 \section{Modular Exponentiation}
 
 Here was my python code:
@@ -73,10 +72,10 @@ I then raise each side to u and v
 \[c1^u = (M^{e1})^{u} mod \; n\]
 \[c2^v = (M^{e2})^{v} mod \; n\]
 \[c1^u * c2^v =  (M^{e1})^{u}*(M^{e2})^{v} mod \; n =  M^{e1*u + e2*v} mod \; n = M mod \; n\]
-
-From this I can multiply $c1^d$ and $(c2^f)^{-1}$: \[c1^d * (c2^f)^{-1} = M^{bd}M^{-ce} = M^{bd-ce}=M mod  \; n\]
-Because my modular exponentiation code can't handle negatives, note that $c2^{-v} \; mod \; n = c2^{n-f} mod \; n$
-
+Because my modular exponentiation code can't handle negatives, note that $c2^{-v^{-1}} \; mod \; n = c2^{n+v} mod \; n$
+Using my attached code, I computed
+\\\\3212790810508942120998734201487211474076472537783700137\\
+22534356594819460385825586617211817817458902529441531
 
 \section{Prime factorization}
 
